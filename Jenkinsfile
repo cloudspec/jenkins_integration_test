@@ -56,6 +56,7 @@ node("master") {
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
+        sh "date xx"
       } catch (e) {
         currentBuild.result = "FAILED"
         throw e
