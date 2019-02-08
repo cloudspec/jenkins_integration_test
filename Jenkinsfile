@@ -48,7 +48,8 @@ node("master") {
   stage('Build') {
     ansiColor('xterm') {
       try {
-        echo "${AWS_DEFAULT_REGION}"
+        echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
+        echo "SHA: ${SHA}"
       } catch (e) {
         currentBuild.result = "FAILED"
         throw e
