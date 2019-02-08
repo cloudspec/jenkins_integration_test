@@ -22,15 +22,15 @@ properties([
   ])
 ])
 
-def AWS_DEFAULT_REGION = "us-east-1"
-def PWD = pwd()
-def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
-def now = new Date()
-
-// slack channel for notifications
-def channel = '#cal-ready-builds'
-
 node("master") {
+
+  def AWS_DEFAULT_REGION = "us-east-1"
+  def PWD = pwd()
+  def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
+  def now = new Date()
+
+  // slack channel for notifications
+  def channel = '#cal-ready-builds'
 
   // get current SHA
   def scmVars = checkout scm
