@@ -22,14 +22,14 @@ properties([
   ])
 ])
 
-def getCommitSha() {
-  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
-}
-
 def AWS_DEFAULT_REGION = "us-east-1"
 def PWD = pwd()
 def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
 def now = new Date()
+
+def getCommitSha() {
+  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
+}
 
 node("master") {
 
