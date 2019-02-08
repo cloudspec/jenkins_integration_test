@@ -4,11 +4,11 @@ properties([
   disableConcurrentBuilds(),
   parameters([
     // Parameters for git/checkout class
-    string(
-      defaultValue: '',
-      description: "SHA of the commit you want to deploy",
-      name: 'SHA'
-    ),
+  //  string(
+  //    defaultValue: '',
+  //    description: "SHA of the commit you want to deploy",
+  //    name: 'SHA'
+  //  ),
     choice(
       name: 'ENV',
       description: "The enviroment to deploy to.",
@@ -30,11 +30,11 @@ def now = new Date()
 // slack channel for notifications
 def channel = '#cal-ready-builds'
 
-// get current SHA
-def scmVars = checkout scm
-def SHA = scmVars.GIT_COMMIT
-
 node("master") {
+
+  // get current SHA
+  def scmVars = checkout scm
+  def SHA = scmVars.GIT_COMMIT
 
   // set current build name
   currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
