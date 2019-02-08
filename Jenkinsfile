@@ -43,6 +43,8 @@ node("master") {
     ENV = 'dev'
   }
 
+  sh(returnStdout: true, script: "ls -l ${PWD}")
+
   // slackSend color: 'good', channel: channel, message: "Starting $ENV build."
 
   stage('Build') {
