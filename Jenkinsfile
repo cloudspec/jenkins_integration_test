@@ -22,6 +22,10 @@ properties([
   ])
 ])
 
+def getCommitSha() {
+  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
+}
+
 node("master") {
 
   def AWS_DEFAULT_REGION = "us-east-1"
@@ -35,10 +39,6 @@ node("master") {
   // set current build name
   currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
 
-
-  def getCommitSha() {
-    return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
-  }
 
   if ( SHA == '' ) {
     SHA = getCommitSha()
