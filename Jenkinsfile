@@ -22,23 +22,22 @@ properties([
   ])
 ])
 
-def getCommitSha() {
-  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
-}
+def AWS_DEFAULT_REGION = "us-east-1"
+def PWD = pwd()
+def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
+def now = new Date()
+
+// slack channel for notifications
+def channel = '#cal-ready-builds'
+
+// get current SHA
+def scmVars = checkout scm
+def SHA = scmVars.GIT_COMMIT
 
 node("master") {
 
-  def AWS_DEFAULT_REGION = "us-east-1"
-  def PWD = pwd()
-  def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
-  def now = new Date()
-
-  // slack channel for notifications
-  def channel = '#cal-ready-builds'
-
   // set current build name
   currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
-
 
   if ( SHA == '' ) {
     SHA = getCommitSha()
