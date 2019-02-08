@@ -43,7 +43,10 @@ node("master") {
     ENV = 'dev'
   }
 
-  sh(returnStdout: true, script: "ls -l ${PWD}")
+  LS = sh (
+    returnStdout: true, 
+    script: "ls -l ${PWD}"
+  )
 
   // slackSend color: 'good', channel: channel, message: "Starting $ENV build."
 
@@ -52,6 +55,7 @@ node("master") {
       try {
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
+        echo "LS: ${LS}"
       } catch (e) {
         currentBuild.result = "FAILED"
         throw e
