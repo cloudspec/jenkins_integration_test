@@ -24,8 +24,12 @@ properties([
 
 node("master") {
 
+  def getCommitSha(){
+    return sh(returnStdout: true, script: 'git rev-parse HEAD')
+  }
+
   if ( SHA == '' ) {
-    SHA = checkout(scm).GIT_COMMIT
+    SHA = getCommitSha()
   }
 
   if ( ENV == '' ) {
