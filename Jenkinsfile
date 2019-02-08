@@ -22,16 +22,23 @@ properties([
   ])
 ])
 
-def AWS_DEFAULT_REGION = "us-east-1"
-def PWD = pwd()
-def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
-def now = new Date()
-
-def getCommitSha() {
-  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
-}
-
 node("master") {
+
+  def AWS_DEFAULT_REGION = "us-east-1"
+  def PWD = pwd()
+  def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
+  def now = new Date()
+
+  // slack channel for notifications
+  def channel = '#cal-ready-builds'
+
+  // set current build name
+  currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
+
+
+  def getCommitSha() {
+    return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
+  }
 
   if ( SHA == '' ) {
     SHA = getCommitSha()
@@ -40,11 +47,6 @@ node("master") {
   if ( ENV == '' ) {
     ENV = 'dev'
   }
-
-  // slack channel for notifications
-  def channel = '#cal-ready-builds'
-
-  currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
 
   // slackSend color: 'good', channel: channel, message: "Starting $ENV build."
 
