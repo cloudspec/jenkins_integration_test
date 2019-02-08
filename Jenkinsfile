@@ -24,9 +24,9 @@ properties([
 
 node("master") {
 
-  // if ( SHA == '' ) {
-  //   SHA = checkout(scm).GIT_COMMIT
-  // }
+  if ( SHA == '' ) {
+    SHA = checkout(scm).GIT_COMMIT
+  }
 
   if ( ENV == '' ) {
     ENV = 'dev'
