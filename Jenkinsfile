@@ -22,11 +22,11 @@ properties([
   ])
 ])
 
-node("master") {
+def getCommitSha() {
+  return sh(returnStdout: true, script: 'git rev-parse HEAD')
+}
 
-  def getCommitSha(){
-    return sh(returnStdout: true, script: 'git rev-parse HEAD')
-  }
+node("master") {
 
   if ( SHA == '' ) {
     SHA = getCommitSha()
