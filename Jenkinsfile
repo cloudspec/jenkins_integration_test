@@ -23,8 +23,13 @@ properties([
 ])
 
 def getCommitSha() {
-  return sh(returnStdout: true, script: 'git rev-parse HEAD')
+  return sh(returnStdout: true, script: 'git --git-dir ${PWD}/.git rev-parse HEAD')
 }
+
+def AWS_DEFAULT_REGION = "us-east-1"
+def PWD = pwd()
+def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
+def now = new Date()
 
 node("master") {
 
@@ -35,12 +40,6 @@ node("master") {
   if ( ENV == '' ) {
     ENV = 'dev'
   }
-
-  AWS_DEFAULT_REGION = "us-east-1"
-
-  def PWD = pwd()
-  def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
-  def now = new Date()
 
   // slack channel for notifications
   def channel = '#cal-ready-builds'
