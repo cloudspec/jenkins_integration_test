@@ -34,13 +34,13 @@ node("master") {
 
   // get current SHA
   def scmVars = checkout scm
-  def SHA = scmVars.GIT_COMMIT
+  def SHA1 = scmVars.GIT_COMMIT
 
   // set current build name
   currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
 
   if ( SHA == '' ) {
-    SHA = getCommitSha()
+    SHA = SHA1
   }
 
   if ( ENV == '' ) {
