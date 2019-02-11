@@ -57,7 +57,7 @@ node("master") {
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
-        sh "date xx"
+        // sh "date xx"
         slackSend color: 'good', channel: channel, message: "Build *${currentBuild.currentResult}*."
       } catch (e) {
         currentBuild.result = "FAILED"
