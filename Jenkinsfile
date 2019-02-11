@@ -53,7 +53,7 @@ node("master") {
     ansiColor('xterm') {
       try {
         echo "Dumping 'currentBuild' object."
-        dump currentBuild
+        currentBuild.dump()
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
