@@ -52,7 +52,7 @@ node("master") {
   stage('Build') {
     ansiColor('xterm') {
       try {
-        echo "Dumping "currentBuild" object."
+        echo "Dumping 'currentBuild' object."
         dump currentBuild
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
