@@ -30,7 +30,7 @@ node("master") {
   def now = new Date()
 
   // slack channel for notifications
-  def channel = '#cal-ready-builds'
+  def channel = '#cloudspec-builds'
 
   // get current SHA
   def scmVars = checkout scm
@@ -48,19 +48,21 @@ node("master") {
     script: "ls -l ${PWD}"
   )
 
-  // slackSend color: 'good', channel: channel, message: "Starting $ENV build."
 
   stage('Build') {
     ansiColor('xterm') {
       try {
+        echo "Dumping "currentBuild" object."
+        dump currentBuild
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
         sh "date xx"
+        slackSend color: 'good', channel: channel, message: "Build *${currentBuild.currentResult}*."
       } catch (e) {
         currentBuild.result = "FAILED"
         throw e
-        // slackSend color: 'danger', channel: channel, message: "Stage: Build *${currentBuild.currentResult}*. Error: ${e}"
+        slackSend color: 'danger', channel: channel, message: "Build *${currentBuild.currentResult}*. Error: ${e}"
       }  
     }
   }
