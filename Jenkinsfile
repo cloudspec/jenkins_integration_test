@@ -60,8 +60,8 @@ node("master") {
         sh "date xx"
         slackSend color: 'good', channel: channel, message: "Build *${currentBuild.currentResult}*."
       } catch (e) {
+        currentBuild.result = "FAILED"
         slackSend color: 'danger', channel: channel, message: "Build *${currentBuild.currentResult}*. Error: ${e}"
-        // currentBuild.result = "FAILED"
         throw e
       }  
     }
