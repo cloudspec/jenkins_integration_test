@@ -3,7 +3,7 @@ import java.text.SimpleDateFormat
 properties([
   disableConcurrentBuilds(),
   parameters([
-    // Parameters for git/checkout class
+  // Parameters for git/checkout class
   //  string(
   //    defaultValue: '',
   //    description: "SHA of the commit you want to deploy",
