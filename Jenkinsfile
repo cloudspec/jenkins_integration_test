@@ -18,8 +18,18 @@ properties([
         'stage',
         'prod'
       ].join('\n')
+    ),
+    booleanParam(
+      defaultValue: true, 
+      description: 'Should we tag and push this?', 
+      name: 'GIT_TAG_AND_PUSH'
+    ),
+    string(
+      defaultValue: true, 
+      description: 'Git tag to push.', 
+      name: 'GIT_TAG'
     )
-  ])
+  ]),
 ])
 
 node("master") {
@@ -58,6 +68,21 @@ node("master") {
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
         //  sh "date xx"
+
+        // git push
+        if ( GIT_TAG_AND_PUSH == true ) {
+
+          withCredentials([
+            sshUserPrivateKey(
+              credentialsId: 'cloudspec_test', 
+              keyFileVariable: 'SSH_KEY'
+            )
+          ]) {
+            sh("git tag $GIT_TAG")
+            sh("git push --tags")
+          }
+        }
+
         slackSend color: 'good', channel: channel, message: "Build *${currentBuild.currentResult}*."
       } catch (e) {
         currentBuild.result = "FAILED"
