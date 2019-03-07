@@ -70,7 +70,7 @@ node("master") {
         //  sh "date xx"
 
         // git push
-        if ( GIT_TAG_AND_PUSH == true ) {
+        if ( GIT_TAG_AND_PUSH ) {
 
           withCredentials([
             sshUserPrivateKey(
