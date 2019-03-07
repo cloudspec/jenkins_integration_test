@@ -58,6 +58,11 @@ node("master") {
     script: "ls -l ${PWD}"
   )
 
+  LSA = sh (
+    returnStdout: true, 
+    script: "ls -ld ${PWD}/.*"
+  )
+
 
   stage('Build') {
     ansiColor('xterm') {
@@ -67,6 +72,7 @@ node("master") {
         echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
         echo "LS: ${LS}"
+        echo "LSA: ${LSA}"
         //  sh "date xx"
 
         // git push
