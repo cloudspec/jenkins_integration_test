@@ -25,7 +25,7 @@ properties([
       name: 'GIT_TAG_AND_PUSH'
     ),
     string(
-      defaultValue: true, 
+      defaultValue: '', 
       description: 'Git tag to push.', 
       name: 'GIT_TAG'
     )
