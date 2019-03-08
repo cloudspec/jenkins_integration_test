@@ -65,6 +65,7 @@ node("master") {
         echo "LS2: ${LS2}"
         echo "scmUrl: ${scmUrl}"
 
+        def gitUrl = 'git@github.com:cloudspec/jenkins_integration_test.git'
         def credentialsId = 'cloudspec_test'
 
         sh "git tag ${GIT_TAG}"
@@ -76,7 +77,7 @@ node("master") {
           )
         ]) {
 
-          sh "GIT_SSH_COMMAND='ssh -i ${SSH_KEY}' git push --tags"
+          sh "GIT_SSH_COMMAND='ssh -i ${SSH_KEY}' git push --tags ${gitUrl}"
 
         }
 
