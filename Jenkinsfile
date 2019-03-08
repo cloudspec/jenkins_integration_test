@@ -34,33 +34,24 @@ properties([
 
 node("master") {
 
-  def AWS_DEFAULT_REGION = "us-east-1"
+  deleteDir()
   def PWD = pwd()
   def dateFormat = new SimpleDateFormat("yyyy.MM.dd")
   def now = new Date()
-
-  // slack channel for notifications
-  def channel = '#cloudspec-builds'
-
-  // get current SHA
   def scmVars = checkout scm
   def SHA = scmVars.GIT_COMMIT
+  def scmUrl = scm.getUserRemoteConfigs()[0].getUrl()
 
-  // set current build name
-  currentBuild.displayName = "#${currentBuild.number}: test_repo $ENV"
+  currentBuild.displayName = "#${currentBuild.number}: git push test $ENV"
 
-  if ( ENV == '' ) {
-    ENV = 'dev'
-  }
-
-  LS = sh (
+  LS1 = sh (
     returnStdout: true, 
-    script: "ls -l ${PWD}"
+    script: "ls -ald ${PWD}"
   )
 
-  LSA = sh (
+  LS2 = sh (
     returnStdout: true, 
-    script: "ls -ld ${PWD}/.*"
+    script: "ls -ald ${PWD}/.*"
   )
 
 
@@ -69,30 +60,22 @@ node("master") {
       try {
         echo "Dumping 'currentBuild' object."
         println currentBuild.dump()
-        echo "AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}"
         echo "SHA: ${SHA}"
-        echo "LS: ${LS}"
-        echo "LSA: ${LSA}"
-        //  sh "date xx"
+        echo "LS1: ${LS1}"
+        echo "LS2: ${LS2}"
+        echo "scmUrl: ${scmUrl}"
 
-        // git push
+        def credentialsId = 'cloudspec_test
+
         if ( GIT_TAG_AND_PUSH ) {
-
-          withCredentials([
-            sshUserPrivateKey(
-              credentialsId: 'cloudspec_test', 
-              keyFileVariable: 'SSH_KEY'
-            )
-          ]) {
-            sh("git tag $GIT_TAG")
-            sh("git push --tags")
+          sshagent (credentials: [credentialsId]) {
+            sh "git tag ${GIT_TAG}"
+            sh "git push --tags"
           }
         }
 
-        slackSend color: 'good', channel: channel, message: "Build *${currentBuild.currentResult}*."
       } catch (e) {
         currentBuild.result = "FAILED"
-        slackSend color: 'danger', channel: channel, message: "Build *${currentBuild.currentResult}*. Error: ${e}"
         throw e
       }  
     }
