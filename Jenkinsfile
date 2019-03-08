@@ -67,7 +67,7 @@ node("master") {
 
         def credentialsId = 'cloudspec_test'
 
-        withCredentials([withCredentials([
+        withCredentials([
           sshUserPrivateKey(
             credentialsId: credentialsId,
             keyFileVariable: 'SSH_KEY'
