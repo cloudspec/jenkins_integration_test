@@ -77,7 +77,7 @@ node("master") {
           )
         ]) {
 
-          sh "GIT_SSH_COMMAND='ssh -i ${SSH_KEY}' git push --tags ${gitUrl}"
+          sh "GIT_SSH_COMMAND=\"ssh -i ${SSH_KEY} -o StrictHostKeyChecking=no\" git push --tags ${gitUrl}"
 
         }
 
