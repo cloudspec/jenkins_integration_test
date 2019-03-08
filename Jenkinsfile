@@ -65,7 +65,7 @@ node("master") {
         echo "LS2: ${LS2}"
         echo "scmUrl: ${scmUrl}"
 
-        def credentialsId = 'cloudspec_test
+        def credentialsId = 'cloudspec_test'
 
         if ( GIT_TAG_AND_PUSH ) {
           sshagent (credentials: [credentialsId]) {
