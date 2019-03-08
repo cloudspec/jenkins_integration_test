@@ -67,6 +67,8 @@ node("master") {
 
         def credentialsId = 'cloudspec_test'
 
+        sh "git tag ${GIT_TAG}"
+
         withCredentials([
           sshUserPrivateKey(
             credentialsId: credentialsId,
@@ -74,16 +76,8 @@ node("master") {
           )
         ]) {
 
-          sh "echo ${SSH_KEY} >./private_key"
+          sh "GIT_SSH_COMMAND='ssh -i ${SSH_KEY}' git push --tags"
 
-        }
-
-
-        if ( GIT_TAG_AND_PUSH ) {
-          sshagent (credentials: [credentialsId]) {
-            sh "git tag ${GIT_TAG}"
-            sh "git push --tags"
-          }
         }
 
       } catch (e) {
